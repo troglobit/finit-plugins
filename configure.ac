@@ -22,7 +22,7 @@ PKG_CHECK_MODULES([lite], [libite >= 2.2.0])
 
 # Check for extra plugins to enable
 enable_all_plugins=auto
-AC_PLUGIN([chrony],        [yes], [Set up and start system time service chronyd])
+AC_PLUGIN([chrony],    [no], [Set up and start system time service chronyd])
 
 AC_EXPAND_DIR(plugin_path, "$libdir/finit/plugins")
 AC_SUBST(plugin_path)
