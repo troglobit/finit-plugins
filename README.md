@@ -1,8 +1,7 @@
-Plugin Repository for Finit
-===========================
+Finit Plugin Repository
+=======================
 
-This repository is for 3rd party plugins that are not part of mainline
-[Finit][] and still have value to be shared with other users.
+This repository is for external plugins not part of mainline [Finit][].
 
 > **Note:** contributions to this repo are expected to follow the coding
 > style of 1) an existing plugin, or 2) coding style of Finit.  It is
@@ -10,6 +9,20 @@ This repository is for 3rd party plugins that are not part of mainline
 > of Finit, or current mainline.  Please describe your changes, or what
 > a new plugin does (code is not self documenting) in the PR and also
 > describe how you have verified the change or tested a new plugin.
+
+
+Build & Install
+---------------
+
+This assumes Finit header files are installed in `/usr/include/finit`.
+
+    ./autogen.sh
+    ./configure --prefix=/usr
+    make
+    sudo make install
+
+The build system is based on GNU autotools so it honors the `DESTDIR`
+environment variable.
 
 
 Disclaimer
