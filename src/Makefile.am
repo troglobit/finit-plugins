@@ -10,3 +10,7 @@ pkglib_LTLIBRARIES  =
 if BUILD_CHRONY_PLUGIN
 pkglib_LTLIBRARIES += chronyd.la
 endif
+
+if BUILD_QMI_PROXY_PLUGIN
+pkglib_LTLIBRARIES += qmi-proxy.la
+endif
