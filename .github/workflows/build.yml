@@ -1,0 +1,49 @@
+name: Bob the Builder
+
+# Run on all branches, including all pull requests, except the 'dev'
+# branch since that's where we run Coverity Scan (limited tokens/day)
+on:
+  push:
+    branches:
+      - '**'
+      - '!dev'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    # Verify we can build on latest Ubuntu with both gcc and clang
+    name: ${{ matrix.compiler }}
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        compiler: [gcc, clang]
+      fail-fast: false
+    env:
+      MAKEFLAGS: -j3
+      CC: ${{ matrix.compiler }}
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get -y update
+          sudo apt-get -y install pkg-config tree
+          wget https://github.com/troglobit/libuev/releases/download/v2.3.2/libuev-2.3.2.tar.xz
+          wget https://github.com/troglobit/libite/releases/download/v2.5.2/libite-2.5.2.tar.gz
+          tar xf libuev-2.3.2.tar.xz
+          tar xf libite-2.5.2.tar.gz
+          (cd libuev-2.3.2 && ./configure --prefix=/usr && make && sudo make install-strip)
+          (cd libite-2.5.2 && ./configure --prefix=/usr && make && sudo make install-strip)
+          sudo ldconfig
+          git clone https://github.com/troglobit/finit.git
+          (cd finit && ./configure --prefix=/usr --exec-prefix= --with-watchdog --with-keventd && make && sudo make install-strip)
+      - uses: actions/checkout@v2
+      - name: Build
+        run: |
+          ./autogen.sh
+          ./configure --prefix=/usr --disable-silent-rules
+          make
+      - name: Install
+        run: |
+          sudo make install-strip
+          tree /usr/lib/finit
