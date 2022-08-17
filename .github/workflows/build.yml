@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get -y update
-          sudo apt-get -y install pkg-config tree
+          sudo apt-get -y install autoconf automake libtool pkg-config tree
           wget https://github.com/troglobit/libuev/releases/download/v2.3.2/libuev-2.3.2.tar.xz
           wget https://github.com/troglobit/libite/releases/download/v2.5.2/libite-2.5.2.tar.gz
           tar xf libuev-2.3.2.tar.xz
@@ -36,7 +36,11 @@ jobs:
           (cd libite-2.5.2 && ./configure --prefix=/usr && make && sudo make install-strip)
           sudo ldconfig
           git clone https://github.com/troglobit/finit.git
-          (cd finit && ./configure --prefix=/usr --exec-prefix= --with-watchdog --with-keventd && make && sudo make install-strip)
+          cd finit
+          ./autogen.sh
+          ./configure --prefix=/usr --exec-prefix= --with-watchdog --with-keventd
+          make
+          sudo make install-strip
       - uses: actions/checkout@v2
       - name: Build
         run: |
