@@ -21,9 +21,11 @@ PKG_PROG_PKG_CONFIG
 PKG_CHECK_MODULES([lite], [libite >= 2.2.0])
 
 # Check for extra plugins to enable
-enable_all_plugins=auto
+AC_ARG_ENABLE(all_plugins,
+    AS_HELP_STRING([--enable-all-plugins], [Enable all plugins, default: auto]),,[
+	enable_all_plugins=$enableval], enable_all_plugins=auto)
 AC_PLUGIN([chrony],    [no], [Set up and start system time service chronyd])
-AC_PLUGIN([qmi-proxy], [no], [Setup and start system qmicli proxy])
+AC_PLUGIN([qmi-proxy], [no], [Set up and start system qmicli proxy])
 
 AC_EXPAND_DIR(plugin_path, "$libdir/finit/plugins")
 AC_SUBST(plugin_path)
@@ -31,3 +33,24 @@ AC_DEFINE_UNQUOTED(PLUGIN_PATH, "$plugin_path", [Install path for plugins from t
 
 # Generate all files
 AC_OUTPUT
+
+cat <<EOF
+
+------------------ Summary ------------------
+ $PACKAGE_NAME version $PACKAGE_VERSION
+  Prefix................: $prefix
+  Exec prefix...........: $eprefix
+  Plugins...............: $plugins
+  C Compiler............: $CC $CFLAGS $CPPFLAGS $LDFLAGS $LIBS
+  Linker................: $LD $LLDP_LDFLAGS $LLDP_BIN_LDFLAGS $LDFLAGS $LIBS
+
+------------- Compiler version --------------
+$($CC --version || true)
+-------------- Linker version ---------------
+$($LD --version || true)
+---------------------------------------------
+
+Check the above options and compile with:
+ ${MAKE-make}
+
+EOF
