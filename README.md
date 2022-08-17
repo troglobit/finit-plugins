@@ -10,6 +10,12 @@ This repository is for external plugins not part of mainline [Finit][].
 > a new plugin does (code is not self documenting) in the PR and also
 > describe how you have verified the change or tested a new plugin.
 
+Finit v4.4, and later, is required for these plugins.  Earlier versions
+of Finit did not export all required header files.  Loading of external
+plugins is supported as of Finit v4.4 from (in order) `/usr/lib/finit`
+and `/usr/local/lib/finit`.  This in addition to the main search path
+for native plugins (`/lib/finit`).
+
 
 Build & Install
 ---------------
