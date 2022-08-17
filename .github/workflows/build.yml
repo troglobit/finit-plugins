@@ -45,7 +45,7 @@ jobs:
       - name: Build
         run: |
           ./autogen.sh
-          ./configure --prefix=/usr --disable-silent-rules
+          ./configure --prefix=/usr --disable-silent-rules --enable-all-plugins
           make
       - name: Install
         run: |
