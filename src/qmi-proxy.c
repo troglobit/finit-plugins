@@ -58,13 +58,13 @@ static void setup(void *arg)
 	char *cmd;
 
 	if (rescue) {
-		_d("Skipping %s plugin in rescue mode.", __FILE__);
+		dbg("Skipping %s plugin in rescue mode.", __FILE__);
 		return;
 	}
 
 	cmd = which(QMI_PROXY_DAEMON);
 	if (!cmd) {
-		_d("Skipping plugin, %s is not installed.", QMI_PROXY_DAEMON);
+		dbg("Skipping plugin, %s is not installed.", QMI_PROXY_DAEMON);
 		return;
 	}
 
@@ -77,7 +77,7 @@ static void setup(void *arg)
 	snprintf(line, sizeof(line), "[S12345789] cgroup.system pid:!%s @%s:%s %s %s -- %s",
 		 QMI_PROXY_DAEMONPIDFILE, QMI_PROXY_DAEMONUSER, QMI_PROXY_DAEMONUSER, cmd, QMI_PROXY_ARGS, QMI_PROXY_DESC);
 	if (service_register(SVC_TYPE_SERVICE, line, global_rlimit, NULL))
-		_pe("Failed registering %s", QMI_PROXY_DAEMON);
+		err("Failed registering %s", QMI_PROXY_DAEMON);
 	free(cmd);
 
 	umask(prev);

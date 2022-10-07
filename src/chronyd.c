@@ -58,19 +58,19 @@ static void setup(void *arg)
 	char *cmd;
 
 	if (rescue) {
-		_d("Skipping %s plugin in rescue mode.", __FILE__);
+		dbg("Skipping %s plugin in rescue mode.", __FILE__);
 		return;
 	}
 
 	cmd = which(CHRONYD_DAEMON);
 	if (!cmd) {
-		_d("Skipping plugin, %s is not installed.", CHRONYD_DAEMON);
+		dbg("Skipping plugin, %s is not installed.", CHRONYD_DAEMON);
 		return;
 	}
 
 	prev =umask(0);
 
-	_d("Creating Chrony Daemon Required Directories ...");
+	dbg("Creating Chrony Daemon Required Directories ...");
 
 	mksubsys("/var/run/chrony", 0770, CHRONYD_DAEMONUSER, CHRONYD_DAEMONGROUP);
 	mksubsys("/var/run/chrony/dhcp", 0770, CHRONYD_DAEMONUSER, CHRONYD_DAEMONGROUP);
@@ -85,7 +85,7 @@ static void setup(void *arg)
 		 cmd, CHRONYD_ARGS, CHRONYD_DESC);
 
 	if (service_register(SVC_TYPE_SERVICE, line, global_rlimit, NULL))
-		_pe("Failed registering %s", CHRONYD_DAEMON);
+		err("Failed registering %s", CHRONYD_DAEMON);
 	free(cmd);
 
 	umask(prev);
