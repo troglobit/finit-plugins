@@ -31,6 +31,22 @@ The build system is based on GNU autotools so it honors the `DESTDIR`
 environment variable.
 
 
+Notice
+------
+
+The plugins used to depend on an optional Finit plugin called `mdevd.so`,
+this has been replaced in upstream Finit with two .conf lines:
+
+    service [S12345789] cgroup.system notify:s6 @root:root mdevd -O 4 -D %n -- Extended Hotplug Daemon (mdevd)
+    task [S] <service/mdevd/ready> @root:root mdevd-coldplug -- Replaying hotplug events to mdevd
+
+Any services that today are plugins and depend on `mdevd` should be
+started as plain services instead.  With an additional condition to
+ensure they are started *after* mdevd, e.g.
+
+    service [S12345789] <service/mdevd/ready> ...
+
+
 Disclaimer
 ----------
 
